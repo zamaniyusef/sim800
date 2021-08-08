@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Ports;
 
 namespace sim800
 {
@@ -6,7 +7,12 @@ namespace sim800
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string[] ports = SerialPort.GetPortNames();
+            Console.WriteLine("The following serial ports were found:");
+            foreach(string port in ports){
+                Console.WriteLine(port);
+            }
+            Console.ReadLine();
         }
     }
 }
