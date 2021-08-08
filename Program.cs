@@ -9,10 +9,24 @@ namespace sim800
         {
             string[] ports = SerialPort.GetPortNames();
             Console.WriteLine("The following serial ports were found:");
-            foreach(string port in ports){
+            foreach(string port in ports)
+            {
                 Console.WriteLine(port);
             }
-            Console.ReadLine();
+            var serial = new SerialPort(ports[0],115200);
+            serial.ReadTimeout = 3000;
+            serial.WriteTimeout = 3000;
+            serial.Open();
+            serial.Write("AT\r\n");
+            var data = serial.ReadLine();
+            Console.WriteLine(data);
+            serial.WriteLine("AT+CCLK?\r\n");
+            data = serial.ReadLine();
+            Console.WriteLine(data);
+            data = serial.ReadLine();
+            Console.WriteLine(data);
+            data = serial.ReadLine();
+            Console.WriteLine(data);
         }
     }
 }
