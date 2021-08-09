@@ -12,6 +12,8 @@ namespace sim800
             gsm.SendAt();
             var currentDatetime = gsm.GetDate();
             Console.WriteLine(currentDatetime.ToLongDateString());
+            var balance = gsm.GetBalance();
+            Console.WriteLine($"Your Balance is {balance}");
         }
     }
 }

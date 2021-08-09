@@ -1,6 +1,7 @@
 using System;
 using System.IO.Ports;
 using System.Globalization;
+using System.Threading;
 
 namespace sim800
 {
@@ -44,7 +45,8 @@ namespace sim800
         {
             Serial.WriteLine("AT+CCLK?\r\n");
             string data = Serial.ReadLine();
-            if(data.Contains("OK")){
+            if (data.Contains("OK"))
+            {
                 data = Serial.ReadLine();
                 data = Serial.ReadLine();
                 data = data.Split('"')[1];
@@ -52,7 +54,25 @@ namespace sim800
                 "yy/MM/dd,HH:mm:ss+ff",
                 CultureInfo.InvariantCulture);
             }
-            return new DateTime();            
+            return new DateTime();
+        }
+
+        public int GetBalance()
+        {
+            Serial.WriteLine("AT+CUSD=1\r\n");
+            string data = Serial.ReadLine();
+            data = Serial.ReadLine();
+            if (data.Contains("OK"))
+            {
+                Serial.WriteLine("AT+CUSD=1,\"*140*11#\"\r\n");
+                Thread.Sleep(8000);
+                data = Serial.ReadExisting();
+                int pFrom = data.IndexOf("Your balance is ") + "Your balance is ".Length;
+                int pTo = data.LastIndexOf(" Rial");
+                data = data.Substring(pFrom, pTo - pFrom);
+                return int.Parse(data);
+            }
+            return 0;
         }
     }
 }
