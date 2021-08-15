@@ -93,7 +93,9 @@ namespace sim800
 
         public void SendPersianSms()
         {
+            Serial.WriteLine("AT+CMGF=1\r\n");
             Serial.WriteLine("AT+CSCS=?\r\n");
+            Serial.WriteLine("AT+CNMI=2,2,0,1,1\r\n");
             Thread.Sleep(1000);
             var data = Serial.ReadExisting();
             Console.WriteLine($"Respose From Sim800 is {data}");
@@ -101,9 +103,9 @@ namespace sim800
             Thread.Sleep(1000);
             Serial.WriteLine("AT+CSMP=49,167,0,8\r\n");
             Thread.Sleep(1000);
-            Serial.Write("AT+CMGS=\"09133084832\"\r\n");
+            Serial.Write("AT+CMGS=\"09361910404\"\r\n");
             Thread.Sleep(1000);
-            var test = "سلام\nبه شما تبریک می‌گویم این اولین پیامک فارسی ماست.\nMr Porkabirian".Select(t => $"{Convert.ToUInt16(t):X4}").ToArray();
+            var test = "سلام".Select(t => $"{Convert.ToUInt16(t):X4}").ToArray();
             var message = "";
             for (int i = 0; i < test.Length; i++)
             {
@@ -111,7 +113,9 @@ namespace sim800
             }
             Console.WriteLine(message);
             Serial.Write(message + "\x1A");
-            Thread.Sleep(2000);
+            Thread.Sleep(10000);
+            var result = Serial.ReadExisting();
+            Console.WriteLine(result);
             Console.WriteLine("Sent Message");
         }
 
