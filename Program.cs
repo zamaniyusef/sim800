@@ -10,10 +10,12 @@ namespace sim800
             gsm.GetSerialPorts();
             gsm.ConnectToGsm();
             gsm.SendAt();
-            var currentDatetime = gsm.GetDate();
-            Console.WriteLine(currentDatetime.ToLongDateString());
-            var balance = gsm.GetBalance();
-            Console.WriteLine($"Your Balance is {balance}");
+            // var currentDatetime = gsm.GetDate();
+            // Console.WriteLine(currentDatetime.ToLongDateString());
+            // var balance = gsm.GetBalance();
+            // Console.WriteLine($"Your Balance is {balance}");
+            gsm.SendPersianSms();
+            gsm.Close();
         }
     }
 }
